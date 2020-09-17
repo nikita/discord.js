@@ -8,7 +8,7 @@ const Collection = require('../util/Collection');
 const { Endpoints } = require('../util/Constants');
 
 class RESTManager {
-  constructor(client, tokenPrefix = 'Bot') {
+  constructor(client, tokenPrefix) {
     this.client = client;
     this.handlers = new Collection();
     this.tokenPrefix = tokenPrefix;
@@ -27,7 +27,12 @@ class RESTManager {
 
   getAuth() {
     const token = this.client.token || this.client.accessToken;
-    if (token) return `${this.tokenPrefix} ${token}`;
+
+    if (token) {
+      if (this.tokenPrefix === 'Bot') return `${this.tokenPrefix} ${token}`
+      else return token;
+    }
+
     throw new Error('TOKEN_MISSING');
   }
 
